@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ระบบพิมพ์ Label ติดแผ่นสไลด์ - รพ. SRJ</title>
+    
+    <!-- Theme & Mobile App Setup (SRJ Hospital Clinical Blue Tone) -->
+    <meta name="theme-color" content="#0284c7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SRJ Slide Label">
+    
+    <!-- App Icon (SRJ Medical / Slide Label Theme) -->
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3063/3063176.png">
+    <link rel="manifest" id="dynamic-manifest">
+
+    <style>
+        /* Smooth scrolling & full viewport setup */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden; 
+            background-color: #f8fafc; /* Clinical Slate Light Background */
+            -webkit-overflow-scrolling: touch; 
+            font-family: 'Sarabun', 'Kanit', sans-serif;
+        }
+        iframe { 
+            border: none; 
+            width: 100%; 
+            height: 100%; 
+            display: block;
+        }
+        /* Loader ระหว่างรอ Apps Script โหลด */
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0369a1;
+            font-weight: 600;
+            font-size: 1rem;
+            z-index: -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+        }
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 4px solid #e0f2fe;
+            border-top: 4px solid #0284c7; /* SRJ Primary Blue */
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="loader">
+        <div class="spinner"></div>
+        <div>กำลังเชื่อมต่อระบบพิมพ์ Label ติดสไลด์ รพ. SRJ...</div>
+    </div>
+
+    <!-- ลิงก์ Apps Script ของโปรเจกต์ SRJ Hospital (อัปเดตใหม่เรียบร้อย) -->
+    <iframe 
+        id="mainApp"
+        src="https://script.google.com/macros/s/AKfycbzZRez98xg5VES3VqIVpOXsyZ4EgpFKWJOVBU8_RVBJQFr3tSaJ1PHANOLkAXuXIMXe/exec"
+        allow="geolocation; microphone; camera; clipboard-read; clipboard-write;"
+    ></iframe>
+
+    <script>
+        // 📱 Dynamic PWA Manifest Setup (SRJ Hospital Theme)
+        document.addEventListener("DOMContentLoaded", function() {
+            const appManifest = {
+                "name": "ระบบพิมพ์ Label ติดแผ่นสไลด์ - รพ. SRJ",
+                "short_name": "SRJ Slide Label",
+                "start_url": window.location.href, 
+                "display": "standalone",
+                "background_color": "#f8fafc",
+                "theme_color": "#0284c7",
+                "icons": [{
+                    "src": "https://cdn-icons-png.flaticon.com/512/3063/3063176.png",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }]
+            };
+            const manifestBlob = new Blob([JSON.stringify(appManifest)], {type: 'application/json'});
+            document.getElementById('dynamic-manifest').href = URL.createObjectURL(manifestBlob);
+        });
+
+        // 🔄 Logic: iframe loading & Auto Focus
+        const iframe = document.getElementById('mainApp');
+        iframe.onload = function() {
+            console.log("SRJ Slide Label Management System Loaded Successfully");
+            iframe.contentWindow.focus();
+        };
+
+        // Fallback รีโหลดหากหน้าค้าง
+        setTimeout(() => {
+            if (!iframe.src) {
+                iframe.src = iframe.src;
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
